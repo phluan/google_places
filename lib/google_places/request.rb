@@ -219,6 +219,7 @@ module GooglePlaces
         request = new(PAGETOKEN_TEXTSEARCH_URL, options)
       else
         request = new(PAGETOKEN_NEARBYSEARCH_URL, options)
+      end
       request.parsed_response
     end
 
