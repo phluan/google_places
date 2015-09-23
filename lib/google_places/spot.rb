@@ -267,11 +267,12 @@ module GooglePlaces
     def self.list_by_pagetoken(pagetoken, api_key, options = {})
       exclude = options.delete(:exclude) || []
       exclude = [exclude] unless exclude.is_a?(Array)
-
+      pagetoken_type = options.delete(:pagetoken_type)
       options = {
           :pagetoken => pagetoken,
           :key => api_key
       }
+      options.merge!(pagetoken_type: pagetoken_type)
 
       request(:spots_by_pagetoken, false, exclude, options)
     end

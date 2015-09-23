@@ -8,13 +8,14 @@ module GooglePlaces
     include ::HTTParty
     format :json
 
-    NEARBY_SEARCH_URL = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json'
-    DETAILS_URL       = 'https://maps.googleapis.com/maps/api/place/details/json'
-    PHOTO_URL         = 'https://maps.googleapis.com/maps/api/place/photo'
-    TEXT_SEARCH_URL   = 'https://maps.googleapis.com/maps/api/place/textsearch/json'
-    PAGETOKEN_URL     = 'https://maps.googleapis.com/maps/api/place/search/json'
-    RADAR_SEARCH_URL  = 'https://maps.googleapis.com/maps/api/place/radarsearch/json'
-    AUTOCOMPLETE_URL  = 'https://maps.googleapis.com/maps/api/place/autocomplete/json'
+    NEARBY_SEARCH_URL         = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json'
+    DETAILS_URL               = 'https://maps.googleapis.com/maps/api/place/details/json'
+    PHOTO_URL                 = 'https://maps.googleapis.com/maps/api/place/photo'
+    TEXT_SEARCH_URL           = 'https://maps.googleapis.com/maps/api/place/textsearch/json'
+    PAGETOKEN_TEXTSEARCH_URL  = 'https://maps.googleapis.com/maps/api/place/textsearch/json'
+    PAGETOKEN_NEARBYSEARCH_URL      = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json'
+    RADAR_SEARCH_URL          = 'https://maps.googleapis.com/maps/api/place/radarsearch/json'
+    AUTOCOMPLETE_URL          = 'https://maps.googleapis.com/maps/api/place/autocomplete/json'
 
     # Search for Spots at the provided location
     #
@@ -213,7 +214,11 @@ module GooglePlaces
     #
     # @see https://developers.google.com/maps/documentation/places/supported_types List of supported types
     def self.spots_by_pagetoken(options = {})
-      request = new(PAGETOKEN_URL, options)
+      pagetoken_type = options.delete(:pagetoken_type)
+      if pagetoken_type == "textsearch"
+        request = new(PAGETOKEN_TEXTSEARCH_URL, options)
+      else
+        request = new(PAGETOKEN_NEARBYSEARCH_URL, options)
       request.parsed_response
     end
 

@@ -6,7 +6,8 @@ describe GooglePlaces::Spot do
     @lat = '-33.8670522'
     @lng = '151.1957362'
     @radius = 200
-    @pagetoken = 'CmRVAAAAqKK43TjXKnyEx4-XTWd4bC-iBq88Olspwga_JQbEpznYpfwXYbWBrxmb-1QYD4DMtq8gym5YruCEVjByOlKn8PWKQO5fHvuYD8rWKHUeBvMleM7k3oh9TUG8zqcyuhPmEhCG_C2XuypmkQ20hRvxro4sGhQN3nbWCjgpjyG_E_ayjVIoTGbViw'
+    @pagetoken_nearbysearch = 'CmRVAAAAqKK43TjXKnyEx4-XTWd4bC-iBq88Olspwga_JQbEpznYpfwXYbWBrxmb-1QYD4DMtq8gym5YruCEVjByOlKn8PWKQO5fHvuYD8rWKHUeBvMleM7k3oh9TUG8zqcyuhPmEhCG_C2XuypmkQ20hRvxro4sGhQN3nbWCjgpjyG_E_ayjVIoTGbViw'
+    @pagetoken_textsearch = 'CtQBygAAAPLwZ1pSSIl6-jwCW6CP79NsAl4WSDvajH-r470VTbkbKH02GUTqDyiByDZeFcwEcWwGJdQoZcygJFvBh6xx34TbT92pZlBBSlfkHi93g5WYTBTCg27CXYKc2hWRhwjNYrxjPMlKYXF3Ri-QSC1cGx3TwmrRg9dXujk0VFFCpWMwSYZcLUr92CGNVL3HmJB-6sKrgwuQoLs2lOjvxj8D3e3n94_j6t7a_hGYNml1vtmSPON6qG2aTAGz2GJxiW59lxqJ_Hr54G3Yi58Hu8FGkQASEIdaoyGLdqZnSi8dvqdWP1UaFCNpTTNulq2MOi7W6gtvN2369oVu'
     @place_id = 'ChIJN1t_tDeuEmsRUsoyG83frY4'
   end
 
@@ -123,11 +124,15 @@ describe GooglePlaces::Spot do
       expect(@collection.last.nextpagetoken).to_not be_nil
     end
 
-    it 'should return some results when :pagetoken is present' do
-      @collection = GooglePlaces::Spot.list_by_pagetoken(@pagetoken, api_key)
+    it 'should return some results when :pagetoken_nearbysearch is present' do
+      @collection = GooglePlaces::Spot.list_by_pagetoken(@pagetoken_nearby, api_key)
       expect(@collection.size).to be >= 1
     end
 
+    it 'should return some results when :pagetoken_textsearch is present' do
+      @collection = GooglePlaces::Spot.list_by_pagetoken(@pagetoken_textsearch, api_key, pagetoken_type: 'textsearch')
+      expect(@collection.size).to be >= 1
+    end
   end
 
   context 'List spots by query', vcr: { cassette_name: 'list_spots' } do
